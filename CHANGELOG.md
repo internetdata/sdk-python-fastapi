@@ -1,0 +1,13 @@
+# Changelog
+
+What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff.
+
+## 1.0.0 - 2026-11-14
+
+### Features
+
+- Attach the visitor's InternetData record to every request, read with `lookup(request)`, as pure ASGI middleware for FastAPI, Starlette and Litestar: the location, the network and the company behind the address, and the anonymity and hosting flags your plan serves ([`68f2916`](https://github.com/internetdata/sdk-python-fastapi/commit/68f2916e9dc33f397747eec3375d08b2f4911f33))
+- Refuse a request with a `block_condition` written in the shape of a result, by country, network type, anonymity or any other member, with 403 or an `on_blocked` of your own ([`68f2916`](https://github.com/internetdata/sdk-python-fastapi/commit/68f2916e9dc33f397747eec3375d08b2f4911f33))
+- Refuse one FastAPI endpoint, router or app with the `block_if` dependency, judging the answer the middleware already attached ([`68f2916`](https://github.com/internetdata/sdk-python-fastapi/commit/68f2916e9dc33f397747eec3375d08b2f4911f33))
+- Choose where the client address comes from: `request.client.host` by default, `xff_ip_selector`, `header_ip_selector` for a header your edge writes, or a callable of your own ([`68f2916`](https://github.com/internetdata/sdk-python-fastapi/commit/68f2916e9dc33f397747eec3375d08b2f4911f33))
+- Fail open on any lookup failure unless `fail_closed` is set, with a 2.5 s bound, no retry and a cache by default ([`68f2916`](https://github.com/internetdata/sdk-python-fastapi/commit/68f2916e9dc33f397747eec3375d08b2f4911f33))
