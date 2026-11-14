@@ -45,7 +45,7 @@ __all__ = [
     "xff_ip_selector",
 ]
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 # Set on a request ``skip`` claimed, so block_if can tell it from one the middleware
 # never saw.
