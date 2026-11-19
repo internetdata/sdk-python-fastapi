@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff.
 
+## 1.0.3 - 2026-11-19
+
+### Fixes
+
+- Require internetdata 2.15.2: a reduced answer is cached a minute at most ([`f64bc97`](https://github.com/internetdata/sdk-python-fastapi/commit/f64bc979d198fa6e7705a5b9fe94f7d3b2faedb9))
+
 ## 1.0.2 - 2026-11-19
 
 ### Fixes
