@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff.
 
+## 1.0.2 - 2026-11-19
+
+### Fixes
+
+- Require internetdata 2.15.1: cap_reached on a paid answer past its overage cap ([`36d9659`](https://github.com/internetdata/sdk-python-fastapi/commit/36d9659c67ea3193e223618051966bd1089e38e0))
+
 ## 1.0.1 - 2026-11-14
 
 ### Fixes
