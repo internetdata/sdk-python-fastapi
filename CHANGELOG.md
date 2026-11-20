@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff.
 
+## 1.0.5 - 2026-11-20
+
+### Features
+
+- Require internetdata 2.17.0: a paid domain answer's hosting, co-hosted domains, home page, redirects and backlinks ([`e32c065`](https://github.com/internetdata/sdk-python-fastapi/commit/e32c065787a667c8e17dcb6408487a840741a204))
+
 ## 1.0.4 - 2026-11-20
 
 ### Features
