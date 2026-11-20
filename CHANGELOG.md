@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff.
 
+## 1.0.4 - 2026-11-20
+
+### Features
+
+- Require internetdata 2.16.0: a tier, standing, license type, format or outcome the API adds reads as served ([`152f365`](https://github.com/internetdata/sdk-python-fastapi/commit/152f365bebf301afe0977f050e7bd8296711b1af))
+
 ## 1.0.3 - 2026-11-19
 
 ### Fixes
