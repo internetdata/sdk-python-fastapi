@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff.
 
+## 1.0.7 - 2026-11-23
+
+### Fixes
+
+- Require internetdata 2.18.1: whose operator an unverified bot names ([`6312d08`](https://github.com/internetdata/sdk-python-fastapi/commit/6312d08620d67e562b640027d584cc35a70f8b4b))
+
 ## 1.0.6 - 2026-11-22
 
 ### Features
