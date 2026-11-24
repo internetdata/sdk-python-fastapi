@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff.
 
+## 1.0.8 - 2026-11-24
+
+### Features
+
+- Require internetdata 2.19.0: a block condition matches any element of a list member ([`5c0c87c`](https://github.com/internetdata/sdk-python-fastapi/commit/5c0c87ceb07779c39a328a8beb806d514ea8f920))
+
 ## 1.0.7 - 2026-11-23
 
 ### Fixes
