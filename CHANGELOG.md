@@ -2,6 +2,13 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff.
 
+## 1.1.0 - 2026-11-25
+
+### Features
+
+- Require internetdata 2.20.0: a user agent with a lookup, and allow_bots in the middleware core ([`9081a5d`](https://github.com/internetdata/sdk-python-fastapi/commit/9081a5dd9d288e61de7daafcd5a71e273a40d346))
+- Let a verified crawler through with allow_bots ([`4d4e6c1`](https://github.com/internetdata/sdk-python-fastapi/commit/4d4e6c1fd09e613739aa773e1057575ba973bcca))
+
 ## 1.0.8 - 2026-11-24
 
 ### Features
