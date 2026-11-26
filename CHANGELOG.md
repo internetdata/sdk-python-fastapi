@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff.
 
+## 1.1.1 - 2026-11-26
+
+### Features
+
+- Require internetdata 2.21.0: a keyless answer without the bot, carrier, satellite and service flags reads ([`d1712e9`](https://github.com/internetdata/sdk-python-fastapi/commit/d1712e9e0ef2a481533af1b64d2bc3539171662e))
+
 ## 1.1.0 - 2026-11-25
 
 ### Features
