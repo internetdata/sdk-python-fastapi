@@ -446,14 +446,19 @@ def test_the_readme_middleware_sends_its_key_for_a_public_peer(
     assert sent[0][1] == (f"Bearer {key}" if key else None)
 
 
-# The bot flag arrived with a re-pin: the README's middleware with a condition on it,
-# served a PUBLIC peer, refuses a crawler's address and lets a person's through, with no
-# warning, since every plan answers it.
+# The bot flag is a paid answer's: the README's middleware with a condition on it, served a PUBLIC
+# peer, refuses a crawler's address and lets a person's through with no warning, and warns once
+# that an Unlimited answer, which lacks the flag, can never match.
+@pytest.mark.parametrize("paid", [True, False], ids=["a paid answer", "an Unlimited answer"])
 def test_a_condition_on_the_bot_flag_refuses_a_bot_from_a_public_peer(
-    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture, paid: bool
 ) -> None:
     bot = ANSWERS["paid-bot"]
-    served = {bot["ip"]: bot, PUBLIC_IP: {**UNLIMITED, "ip": PUBLIC_IP}}
+    served = (
+        {bot["ip"]: bot, PUBLIC_IP: PAID}
+        if paid
+        else {ip: {**UNLIMITED, "ip": ip} for ip in (bot["ip"], PUBLIC_IP)}
+    )
     sent: list[str] = []
 
     async def handle(
@@ -475,9 +480,10 @@ def test_a_condition_on_the_bot_flag_refuses_a_bot_from_a_public_peer(
         with TestClient(app, client=(peer, 12345)) as client:
             statuses.append(client.get("/").status_code)
 
-    assert statuses == [403, 200]
+    assert statuses == ([403, 200] if paid else [200, 200])
     assert sent == [bot["ip"], PUBLIC_IP]
-    assert not [r for r in caplog.records if "is_bot" in r.getMessage()], "no member is missing"
+    warned = [r for r in caplog.records if "names is_bot" in r.getMessage()]
+    assert bool(warned) is not paid, "only an answer without the flag is a plan gap"
 
 
 GOOGLEBOT = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
