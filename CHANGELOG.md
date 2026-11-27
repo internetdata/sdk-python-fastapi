@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff.
 
+## 1.1.2 - 2026-11-27
+
+### Features
+
+- Require internetdata 2.22.0: a keyless answer without the AS's type reads ([`494672c`](https://github.com/internetdata/sdk-python-fastapi/commit/494672ce2faea3e1cf6be3a8924f6ba0b7b7b635))
+
 ## 1.1.1 - 2026-11-26
 
 ### Features
