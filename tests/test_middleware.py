@@ -502,11 +502,16 @@ GOOGLEBOT = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.
 
 
 def api_answering(
-    monkeypatch: pytest.MonkeyPatch, verdicts: dict[str, str] | None
+    monkeypatch: pytest.MonkeyPatch,
+    verdicts: dict[str, str] | None,
+    *,
+    verdict: str = "not_bot",
+    vouched: bool = True,
 ) -> list[str | None]:
-    """The API's host, answering every lookup as a match for ``{"is_hosting": True}`` and,
-    for a sent agent, with the verdict ``verdicts`` holds for it (None: no verdict, as
-    Unlimited answers). Returns the ``user_agent`` each lookup sent."""
+    """The API's host, answering every lookup as a match for ``{"is_hosting": True}``, with
+    the address's operator ``vouched`` for or not, and, for a sent agent, with the verdict
+    ``verdicts`` holds for it, ``verdict`` for any other (None: no verdict, as Unlimited
+    answers). Returns the ``user_agent`` each lookup sent."""
     sent: list[str | None] = []
 
     async def handle(
@@ -517,9 +522,10 @@ def api_answering(
         agent = request.url.params.get("user_agent")
         sent.append(agent)
         body: dict[str, Any] = {**PAID, "ip": request.url.path.lstrip("/"), "is_hosting": True}
+        body["bot"] = {**PAID["bot"], "verified": vouched}
         if agent and verdicts is not None:
-            verdict = verdicts.get(agent, "not_bot")
-            body["user_agent"] = {"agent": "Googlebot", "kind": "bot", "verdict": verdict}
+            served = verdicts.get(agent, verdict)
+            body["user_agent"] = {"agent": "Googlebot", "kind": "bot", "verdict": served}
         return httpx.Response(200, json=body)
 
     monkeypatch.setattr(httpx.AsyncHTTPTransport, "handle_async_request", handle)
@@ -597,6 +603,53 @@ def test_a_condition_naming_the_verdict_refuses_a_forged_crawler(
     app = readme_app(allow_bots=True, block_condition={"user_agent": {"verdict": "spoofed"}})
 
     assert visit(app, (GOOGLEBOT, "/", PUBLIC_IP)) == [403]
+
+
+def crawler(n: int) -> str:
+    return f"Mozilla/5.0 (compatible; Examplebot/{n}.0)"
+
+
+@pytest.mark.parametrize(("vouched", "fifth"), [(False, 403), (True, 200)])
+def test_one_address_is_looked_up_with_at_most_four_crawler_agents(
+    monkeypatch: pytest.MonkeyPatch, vouched: bool, fifth: int
+) -> None:
+    sent = api_answering(monkeypatch, {}, verdict="verified", vouched=vouched)
+    app = readme_app(
+        client=AsyncInternetData(api_key="a-key", cache=False, retries=0),
+        allow_bots=True,
+        block_condition={"is_hosting": True},
+    )
+
+    statuses = visit(
+        app,
+        *[(crawler(n), "/", PUBLIC_IP) for n in range(1, 6)],
+        (crawler(1), "/", PUBLIC_IP),
+        (crawler(5), "/", "45.83.91.2"),
+    )
+
+    assert statuses == [200, 200, 200, 200, fifth, 200, 200]
+    assert sent == [
+        crawler(1),
+        crawler(2),
+        crawler(3),
+        crawler(4),
+        None,
+        crawler(1),
+        crawler(5),
+    ]
+
+
+def test_a_browsers_user_agent_is_not_sent(monkeypatch: pytest.MonkeyPatch) -> None:
+    sent = api_answering(monkeypatch, {}, verdict="verified")
+    browser = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151.0.0.0"
+
+    statuses = visit(
+        readme_app(allow_bots=True, block_condition={"is_hosting": True}),
+        (browser, "/", PUBLIC_IP),
+    )
+
+    assert sent == [None]
+    assert statuses == [403]
 
 
 def test_an_answer_without_a_verdict_warns_once(monkeypatch: pytest.MonkeyPatch) -> None:
