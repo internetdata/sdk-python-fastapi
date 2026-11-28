@@ -2,6 +2,12 @@
 
 What each release changed for you, newest first. Each line is a commit's summary, linked to its full description and diff.
 
+## 1.1.3 - 2026-11-28
+
+### Features
+
+- Require internetdata 2.23.0: allow_bots sends only a crawler's User-Agent, at most four an address ([`0e34afb`](https://github.com/internetdata/sdk-python-fastapi/commit/0e34afb9b9ea15cf9180b1489cb06314fd748241))
+
 ## 1.1.2 - 2026-11-27
 
 ### Features
